@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { UnsplashPhoto } from "./types";
+import { UnsplashPhoto } from "./unsplash.types";
 
 const ACCESS_KEY =
   process.env.REACT_APP_UNSPLASH_ACCESS_KEY || "your_access_key_here";
@@ -25,10 +24,7 @@ export const fetchPhotos = async (
   return response.data;
 };
 
-export const usePhotosQuery = (page: number = 1, perPage: number = 10) => {
-  return useQuery({
-    queryKey: ["photos", page, perPage],
-    queryFn: () => fetchPhotos(page, perPage),
-    staleTime: 5000,
-  });
+export const fetchPhotoById = async (id: string): Promise<UnsplashPhoto> => {
+  const response = await unsplashApi.get<UnsplashPhoto>(`/photos/${id}`);
+  return response.data;
 };
