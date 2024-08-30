@@ -4,34 +4,57 @@ export const GridContainer = styled.div`
   padding: 16px;
 `;
 
-export const PhotoGrid = styled.div`
-  column-count: 3; // Number of columns in the grid
-  column-gap: 16px; // Space between the columns
+export const GridViewStyled = styled.div`
+  padding: 16px;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 200px;
+  grid-auto-flow: dense;
+
+  .image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    grid-row: span 1;
+    grid-column: span 1;
+
+    &.small {
+      grid-row: span 1;
+      grid-column: span 1;
+    }
+
+    &.wide {
+      grid-column: span 2;
+    }
+
+    &.tall {
+      grid-row: span 2;
+    }
+
+    &.big {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .link {
+      display: flex;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  }
 
   @media (max-width: 768px) {
-    column-count: 2;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   @media (max-width: 480px) {
-    column-count: 1;
-  }
-`;
-
-export const PhotoItem = styled.div`
-  break-inside: avoid; // Prevents photos from being split across columns
-  margin-bottom: 16px;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
 `;
