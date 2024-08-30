@@ -8,16 +8,17 @@ export const Container = styled.div`
   max-width: 100%;
   height: 100vh;
   box-sizing: border-box;
+  position: relative;
   overflow: hidden;
 `;
 
 export const ImageWrapper = styled.div`
-  flex: 1;
-  max-height: 80vh;
+  flex-grow: 1;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const Image = styled.img`
@@ -28,26 +29,38 @@ export const Image = styled.img`
 `;
 
 export const Details = styled.div`
-  margin-top: 10px;
-  text-align: center;
-  padding: 0 16px;
+  padding: 16px;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+
+  .description {
+    width: calc(100vw - 32px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 export const BackButton = styled.button`
-  align-self: flex-start;
-  margin-bottom: 16px;
+  position: fixed;
+  left: 16px;
+  top: 16px;
   padding: 8px 16px;
   border: none;
-  background-color: #007bff;
+  background: none;
   color: white;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
 
   &:hover {
-    background-color: #0056b3;
+    text-decoration: underline;
   }
 `;

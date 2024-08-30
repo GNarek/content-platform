@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePhotoQuery } from "../../api/unsplash";
+import { formatDate } from "../../utils/date";
 import {
   Container,
   ImageWrapper,
@@ -24,13 +25,18 @@ export const DetailView: React.FC = () => {
 
   return (
     <Container>
-      <BackButton onClick={() => navigate(-1)}>Back to Grid</BackButton>
+      <BackButton onClick={() => navigate(-1)}>&#8678; Back to Grid</BackButton>
+
       <ImageWrapper>
         <Image src={photo.urls.full} alt={photo.alt_description || "Photo"} />
       </ImageWrapper>
+
       <Details>
-        <h2>{photo.description || photo.alt_description}</h2>
+        <h2 className="description">
+          {photo.description || photo.alt_description}
+        </h2>
         <p>By {photo.user.name}</p>
+        <p>Created on {formatDate(photo.created_at)}</p>
       </Details>
     </Container>
   );
