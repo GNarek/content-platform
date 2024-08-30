@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { usePhotosQuery } from "../../api/unsplash";
 import { UnsplashPhoto } from "../../api/unsplash";
 import { GridViewStyled } from "./GridView.styles";
-import { getPhotoClass } from "./GridView.utils";
+import { getPhotoSizeType } from "./GridView.utils";
+import { useHandleScroll, useIntersectionObserver } from "./GridView.hooks";
+
+const PHOTOS_PER_PAGE = 30;
 
 export const GridView: React.FC = () => {
-  const { data: photos, isLoading, isError } = usePhotosQuery(1, 20);
+  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
+    usePhotosQuery(PHOTOS_PER_PAGE);
 
-  if (isLoading) {
+  const allPhotos = useMemo(
+    () => data?.pages.flatMap((page) => page) || [],
+    [data?.pages]
+  );
+
+  const { photoRefs, visiblePhotos } = useIntersectionObserver(allPhotos);
+
+  useHandleScroll(fetchNextPage, hasNextPage);
+
+  if (isLoading && !data) {
     return <div>Loading...</div>;
   }
 
@@ -18,18 +31,28 @@ export const GridView: React.FC = () => {
 
   return (
     <GridViewStyled>
-      {photos?.map((photo: UnsplashPhoto) => (
+      {allPhotos.map((photo: UnsplashPhoto) => (
         <Link
           key={photo.id}
           to={`/photo/${photo.id}`}
-          className={`${getPhotoClass(
+          className={`${getPhotoSizeType(
             photo.width,
             photo.height
           )} image-wrapper`}
+          id={photo.id}
+          ref={(el) => {
+            photoRefs.current[photo.id] = el;
+          }}
         >
-          <img src={photo.urls.small} alt={photo.alt_description || "Photo"} />
+          {visiblePhotos.has(photo.id) && (
+            <img
+              src={photo.urls.small}
+              alt={photo.alt_description || "Photo"}
+            />
+          )}
         </Link>
       ))}
+      {isLoading && <div>Loading more photos...</div>}
     </GridViewStyled>
   );
 };

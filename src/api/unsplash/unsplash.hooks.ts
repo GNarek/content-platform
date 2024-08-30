@@ -1,11 +1,31 @@
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useInfiniteQuery,
+  QueryFunctionContext,
+  QueryKey,
+  InfiniteData,
+} from "@tanstack/react-query";
 import { fetchPhotoById, fetchPhotos } from "./unsplash";
+import { UnsplashPhoto } from "./unsplash.types";
 
-export const usePhotosQuery = (page: number = 1, perPage: number = 10) => {
-  return useQuery({
-    queryKey: ["photos", page, perPage],
-    queryFn: () => fetchPhotos(page, perPage),
+export const usePhotosQuery = (perPage: number = 10) => {
+  return useInfiniteQuery<
+    UnsplashPhoto[],
+    Error,
+    InfiniteData<UnsplashPhoto[]>,
+    QueryKey,
+    number
+  >({
+    queryKey: ["photos"],
+    queryFn: (context: QueryFunctionContext<QueryKey, number>) => {
+      const page = context.pageParam ?? 1;
+      return fetchPhotos(page, perPage);
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length ? allPages.length + 1 : undefined;
+    },
     staleTime: 5000,
+    initialPageParam: 1,
   });
 };
 
