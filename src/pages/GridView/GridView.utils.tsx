@@ -1,4 +1,4 @@
-enum PHOTO_SIZE_TYPE {
+export enum PHOTO_SIZE_TYPE {
   WIDE = "wide",
   TALL = "tall",
   BIG = "big",
