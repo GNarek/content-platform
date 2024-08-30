@@ -8,7 +8,7 @@ import {
 import { fetchPhotoById, fetchPhotos } from "./unsplash";
 import { UnsplashPhoto } from "./unsplash.types";
 
-export const usePhotosQuery = (perPage: number = 10) => {
+export const usePhotosQuery = (perPage: number = 10, query: string = "") => {
   return useInfiniteQuery<
     UnsplashPhoto[],
     Error,
@@ -16,10 +16,10 @@ export const usePhotosQuery = (perPage: number = 10) => {
     QueryKey,
     number
   >({
-    queryKey: ["photos"],
+    queryKey: ["photos", query],
     queryFn: (context: QueryFunctionContext<QueryKey, number>) => {
       const page = context.pageParam ?? 1;
-      return fetchPhotos(page, perPage);
+      return fetchPhotos(page, perPage, query);
     },
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length ? allPages.length + 1 : undefined;

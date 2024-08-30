@@ -13,15 +13,27 @@ const unsplashApi = axios.create({
 
 export const fetchPhotos = async (
   page: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
+  query?: string
 ): Promise<UnsplashPhoto[]> => {
-  const response = await unsplashApi.get<UnsplashPhoto[]>("/photos", {
-    params: {
-      page,
-      per_page: perPage,
-    },
-  });
-  return response.data;
+  const params: Record<string, any> = {
+    page,
+    per_page: perPage,
+  };
+
+  if (query) {
+    params.query = query;
+    const response = await unsplashApi.get<{ results: UnsplashPhoto[] }>(
+      "/search/photos",
+      { params }
+    );
+    return response.data.results;
+  } else {
+    const response = await unsplashApi.get<UnsplashPhoto[]>("/photos", {
+      params,
+    });
+    return response.data;
+  }
 };
 
 export const fetchPhotoById = async (id: string): Promise<UnsplashPhoto> => {

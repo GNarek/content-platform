@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import debounce from "lodash/debounce";
 import { Link } from "react-router-dom";
 import { usePhotosQuery } from "../../api/unsplash";
 import { UnsplashPhoto } from "../../api/unsplash";
@@ -9,8 +10,15 @@ import { useHandleScroll, useIntersectionObserver } from "./GridView.hooks";
 const PHOTOS_PER_PAGE = 30;
 
 export const GridView: React.FC = () => {
+  const [query, setQuery] = useState("");
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
-    usePhotosQuery(PHOTOS_PER_PAGE);
+    usePhotosQuery(PHOTOS_PER_PAGE, query);
+
+  const debouncedSetQuery = debounce(setQuery, 500);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSetQuery(e.target.value);
+  };
 
   const allPhotos = useMemo(
     () => data?.pages.flatMap((page) => page) || [],
@@ -21,38 +29,49 @@ export const GridView: React.FC = () => {
 
   useHandleScroll(fetchNextPage, hasNextPage);
 
-  if (isLoading && !data) {
-    return <div>Loading...</div>;
-  }
-
   if (isError) {
     return <div>Error loading photos.</div>;
   }
 
   return (
     <GridViewStyled>
-      {allPhotos.map((photo: UnsplashPhoto) => (
-        <Link
-          key={photo.id}
-          to={`/photo/${photo.id}`}
-          className={`${getPhotoSizeType(
-            photo.width,
-            photo.height
-          )} image-wrapper`}
-          id={photo.id}
-          ref={(el) => {
-            photoRefs.current[photo.id] = el;
-          }}
-        >
-          {visiblePhotos.has(photo.id) && (
-            <img
-              src={photo.urls.small}
-              alt={photo.alt_description || "Photo"}
-            />
-          )}
-        </Link>
-      ))}
-      {isLoading && <div>Loading more photos...</div>}
+      <div className="search-wrapper">
+        <input
+          type="text"
+          placeholder="Search photos..."
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+      </div>
+      <div className="gridview-wrapper">
+        {allPhotos.map((photo: UnsplashPhoto) => (
+          <Link
+            key={photo.id}
+            to={`/photo/${photo.id}`}
+            className={`${getPhotoSizeType(
+              photo.width,
+              photo.height
+            )} image-wrapper`}
+            id={photo.id}
+            ref={(el) => {
+              photoRefs.current[photo.id] = el;
+            }}
+          >
+            {visiblePhotos.has(photo.id) && (
+              <img
+                src={photo.urls.small}
+                alt={photo.alt_description || "Photo"}
+                style={{ backgroundColor: photo.color }}
+              />
+            )}
+          </Link>
+        ))}
+      </div>
+
+      {isLoading && <div className="info">Loading more photos...</div>}
+      {!isLoading && !allPhotos.length && query.length && (
+        <div className="info">There are no matches for "{query}"</div>
+      )}
     </GridViewStyled>
   );
 };
