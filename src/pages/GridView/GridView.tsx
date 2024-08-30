@@ -46,6 +46,9 @@ export const GridView: React.FC = () => {
       <div className="gridview-wrapper">
         {allPhotos.map((photo: UnsplashPhoto) => (
           <Link
+            aria-label={`View photo of ${
+              photo.user.first_name || "unknown author"
+            }`}
             key={photo.id}
             to={`/photo/${photo.id}`}
             className={`${getPhotoSizeType(
@@ -56,12 +59,13 @@ export const GridView: React.FC = () => {
             ref={(el) => {
               photoRefs.current[photo.id] = el;
             }}
+            style={{ backgroundColor: photo.color }}
           >
             {visiblePhotos.has(photo.id) && (
               <img
+                crossOrigin="anonymous"
                 src={photo.urls.small}
                 alt={photo.alt_description || "Photo"}
-                style={{ backgroundColor: photo.color }}
               />
             )}
           </Link>
