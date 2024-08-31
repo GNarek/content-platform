@@ -13,7 +13,7 @@ describe("getPhotoSizeType", () => {
   });
 
   test("returns BIG for large photos", () => {
-    const result = getPhotoSizeType(2000, 2000);
+    const result = getPhotoSizeType(4000, 4000);
     expect(result).toBe(PHOTO_SIZE_TYPE.BIG);
   });
 

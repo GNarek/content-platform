@@ -7,7 +7,7 @@ import {
 import { UnsplashPhoto } from "../../api/unsplash";
 
 export const useIntersectionObserver = (allPhotos: UnsplashPhoto[]) => {
-  const photoRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+  const photoRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [visiblePhotos, setVisiblePhotos] = useState<Set<string>>(new Set());
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -59,7 +59,7 @@ export const useHandleScroll = (
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 50 &&
+          document.documentElement.offsetHeight - 150 &&
         hasNextPage
       ) {
         fetchNextPage();

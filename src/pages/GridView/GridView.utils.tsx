@@ -15,7 +15,7 @@ export const getPhotoSizeType = (
     return PHOTO_SIZE_TYPE.WIDE;
   } else if (aspectRatio < 0.67) {
     return PHOTO_SIZE_TYPE.TALL;
-  } else if (width > 1200 && height > 1200) {
+  } else if (width > 3500 && height > 3500) {
     return PHOTO_SIZE_TYPE.BIG;
   }
 

@@ -19,13 +19,14 @@ export const ImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-`;
 
-export const Image = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
 `;
 
 export const Details = styled.div`

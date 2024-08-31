@@ -1,16 +1,17 @@
 import React, { useMemo, useState } from "react";
 import debounce from "lodash/debounce";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usePhotosQuery } from "../../api/unsplash";
 import { UnsplashPhoto } from "../../api/unsplash";
 import { GridViewStyled } from "./GridView.styles";
 import { getPhotoSizeType } from "./GridView.utils";
 import { useHandleScroll, useIntersectionObserver } from "./GridView.hooks";
 
-const PHOTOS_PER_PAGE = 30;
+const PHOTOS_PER_PAGE = 50;
 
 export const GridView: React.FC = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     usePhotosQuery(PHOTOS_PER_PAGE, query);
 
@@ -33,6 +34,15 @@ export const GridView: React.FC = () => {
     return <div>Error loading photos.</div>;
   }
 
+  const navigateToDetailView = (photo: UnsplashPhoto) => {
+    return () =>
+      navigate(`/photo/${photo.id}`, {
+        state: {
+          photo: photo,
+        },
+      });
+  };
+
   return (
     <GridViewStyled>
       <div className="search-wrapper">
@@ -45,12 +55,12 @@ export const GridView: React.FC = () => {
       </div>
       <div className="gridview-wrapper">
         {allPhotos.map((photo: UnsplashPhoto) => (
-          <Link
+          <div
             aria-label={`View photo of ${
               photo.user.first_name || "unknown author"
             }`}
             key={photo.id}
-            to={`/photo/${photo.id}`}
+            onClick={navigateToDetailView(photo)}
             className={`${getPhotoSizeType(
               photo.width,
               photo.height
@@ -68,7 +78,7 @@ export const GridView: React.FC = () => {
                 alt={photo.alt_description || "Photo"}
               />
             )}
-          </Link>
+          </div>
         ))}
       </div>
 
