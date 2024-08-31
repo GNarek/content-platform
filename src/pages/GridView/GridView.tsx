@@ -7,7 +7,7 @@ import { GridViewStyled } from "./GridView.styles";
 import { getPhotoSizeType } from "./GridView.utils";
 import { useHandleScroll, useIntersectionObserver } from "./GridView.hooks";
 
-const PHOTOS_PER_PAGE = 50;
+const PHOTOS_PER_PAGE = 30;
 
 export const GridView: React.FC = () => {
   const [query, setQuery] = useState("");
