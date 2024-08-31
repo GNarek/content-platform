@@ -1,43 +1,107 @@
-# Getting Started with Create React App
+# Content Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React application that displays photos fetched from the Unsplash API. It features a responsive masonry grid layout, infinite scrolling, error handling with error boundaries, and a search functionality to filter photos.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Installation](#installation)
+- [Design Decisions](#design-decisions)
+- [Performance Optimization](#performance-optimization)
+- [Learn More](#learn-more)
 
-### `npm start`
+### Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Clone the repository:**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   ```bash
+   git clone https://github.com/GNarek/content-platform.git
+   cd ./content-platform
+   ```
 
-### `npm test`
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Set up environment variables:**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   - In the `.env.local` file in the root directory of the project add your Unsplash API key:
 
-### `npm run build`
+   ```bash
+   REACT_APP_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   4. **Start the development server:**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open http://localhost:3000 to view it in the browser.
 
-### `npm run eject`
+### Building the Project
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To create a production build of the application:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+ npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This will build the app for production to the build folder.
+It bundles React in production mode and optimizes the build for the best performance.
+The build is minified, and the filenames include hashes for cache-busting.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Running Tests
+
+You can run the test suite using:
+
+```bash
+ npm test
+```
+
+This launches the test runner in interactive watch mode.
+You can also run specific tests or configure your testing environment as needed.
+
+## Design Decisions
+
+### Error Handling
+
+To ensure that the application is resilient and provides a good user experience, we implemented error boundaries using the `react-error-boundary` library. This allows the application to catch and gracefully handle errors, displaying a fallback UI instead of crashing entirely.
+
+### Responsive Design
+
+The application features a responsive masonry grid layout for displaying photos. This was implemented using CSS Grid, with custom logic to determine the size and position of photos based on their dimensions.
+
+### Infinite Scrolling
+
+To provide a seamless user experience, infinite scrolling was implemented. This allows users to continuously load more photos as they scroll down the page. The `useInfiniteQuery` hook from `@tanstack/react-query` was used to manage data fetching.
+
+### Search Functionality
+
+A search bar was added to allow users to filter photos based on a query. The search functionality uses debouncing to minimize unnecessary API calls, improving performance.
+
+## Performance Optimization
+
+### Virtualized List for Masonry Grid
+
+To handle large data a virtualized list approach was implemented to only render photos that are visible on the screen. And background color is used as a placeholder.
+
+### Details View Optimizations
+
+The `DetailView` component was optimized to enhance performance and user experience by implementing the following:
+
+**Lazy Loading**: Initially loads a smaller image, followed by the high-resolution version once it's ready. This improves load times and ensures smooth transitions.
+
+### Debouncing API Calls
+
+To prevent excessive API calls, particularly during search input, we implemented debouncing using `lodash`. This delays the execution of the search function until the user has stopped typing for a set period, reducing the number of unnecessary requests.
+
+### Error Boundaries
+
+Error boundaries were implemented to catch and handle errors in the application, ensuring that users are presented with a friendly error message instead of a broken application.
+
+### Lighthouse
+
+Performance was monitored and optimized using Lighthouse.
 
 ## Learn More
 
