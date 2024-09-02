@@ -9,43 +9,18 @@ export const GridViewStyled = styled.div`
   flex-direction: column;
 
   .gridview-wrapper {
+    position: relative;
     margin-top: 40px;
-    padding: 16px;
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-auto-rows: 200px;
-    grid-auto-flow: dense;
 
     .image-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      grid-row: span 1;
-      grid-column: span 1;
-
-      &.small {
-        grid-row: span 1;
-        grid-column: span 1;
-      }
-
-      &.wide {
-        grid-column: span 2;
-      }
-
-      &.tall {
-        grid-row: span 2;
-      }
-
-      &.big {
-        grid-column: span 2;
-        grid-row: span 2;
-      }
-
-      .link {
-        display: flex;
-      }
+      position: absolute;
+      border: 1px solid black; /* Box border */
+      background-color: lightgrey;
+      box-sizing: border-box;
+      text-align: center;
+      line-height: normal;
+      border: 5px solid #000;
+      overflow: hidden;
 
       img {
         width: 100%;
@@ -54,14 +29,6 @@ export const GridViewStyled = styled.div`
         border-radius: 5px;
       }
     }
-
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-
-    @media (max-width: 480px) {
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    }
   }
 
   .search-wrapper {
@@ -69,6 +36,7 @@ export const GridViewStyled = styled.div`
     width: 100%;
     box-shadow: 0px 2px 5px 0px #fff;
     margin-bottom: 20px;
+    z-index: 100;
 
     .search-input {
       padding: 10px;
