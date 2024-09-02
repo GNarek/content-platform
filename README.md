@@ -69,7 +69,7 @@ To ensure that the application is resilient and provides a good user experience,
 
 ### Responsive Design
 
-The application features a responsive masonry grid layout for displaying photos. This was implemented using CSS Grid, with custom logic to determine the size and position of photos based on their dimensions.
+The application features a responsive masonry grid layout for displaying photos. This was implemented using window width and custom logic to determine the size and position of photos based on their dimensions.
 
 ### Infinite Scrolling
 
@@ -84,6 +84,10 @@ A search bar was added to allow users to filter photos based on a query. The sea
 ### Virtualized List for Masonry Grid
 
 To handle large data a virtualized list approach was implemented to only render photos that are visible on the screen. And background color is used as a placeholder.
+
+### Image Positioning
+
+Images are dynamically positioned in a responsive grid by calculating optimal placement to minimize gaps, based on their size and available space.
 
 ### Details View Optimizations
 
